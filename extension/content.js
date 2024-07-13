@@ -38,7 +38,7 @@
     const videoData = await fetchYouTubeVideoData(videoID);
     if (videoData) {
       const queryParams = new URLSearchParams(videoData).toString();
-      const externalUrl = `https://localhost.com/fill?${queryParams}`;
+      const externalUrl = `http:localhost:3000/fill?${queryParams}`;
       window.location.href = externalUrl;
     } else {
       alert('failed.');
