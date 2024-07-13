@@ -1,95 +1,131 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client'
 
-export default function Home() {
+import { PasskeyArgType } from '@safe-global/protocol-kit'
+import { Safe4337Pack } from '@safe-global/relay-kit'
+import Img from 'next/image'
+import { useState } from 'react'
+import PasskeyList from './components/PasskeyList'
+import { BUNDLER_URL, CHAIN_NAME, RPC_URL } from './lib/constants'
+import { mintNFT } from './lib/mintNFT'
+import { getPasskeyFromRawId } from './lib/passkeys'
+
+function Create4337SafeAccount() {
+  const [selectedPasskey, setSelectedPasskey] = useState<PasskeyArgType>()
+  const [safeAddress, setSafeAddress] = useState<string>()
+  const [isSafeDeployed, setIsSafeDeployed] = useState<boolean>()
+  const [userOp, setUserOp] = useState<string>()
+
+  const selectPasskeySigner = async (rawId: string) => {
+    console.log('selected passkey signer: ', rawId)
+
+    const passkey = getPasskeyFromRawId(rawId)
+
+    const safe4337Pack = await Safe4337Pack.init({
+      provider: RPC_URL,
+      signer: passkey,
+      bundlerUrl: BUNDLER_URL,
+      options: {
+        owners: [],
+        threshold: 1
+      }
+    })
+
+    const safeAddress = await safe4337Pack.protocolKit.getAddress()
+    const isSafeDeployed = await safe4337Pack.protocolKit.isSafeDeployed()
+
+    setSelectedPasskey(passkey)
+    setSafeAddress(safeAddress)
+    setIsSafeDeployed(isSafeDeployed)
+  }
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <>
+      <div
+        style={{
+          width: '50%'
+        }}
+      >
+        {selectedPasskey && (
+          <>
+            <h2>Selected passkey</h2>
+
+            <div style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              {selectedPasskey.rawId}
+            </div>
+          </>
+        )}
+        <PasskeyList selectPasskeySigner={selectPasskeySigner} />
+      </div>
+      {safeAddress && (
+        <div
+          style={{
+            width: '50%'
+          }}
+        >
+          <h2>Safe Account</h2>
+
+          <div style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            Address: {safeAddress}
+          </div>
+          <div>
+            Is the account deployed?: {' '}
+            {isSafeDeployed ? (
+              <a
+                href={`https://app.safe.global/transactions/history?safe=sep:${safeAddress}`}
+                target='_blank'
+                rel='noreferrer'
+              >
+                Yes{' '}
+                <Img
+                  src='/external-link.svg'
+                  alt='External link'
+                  width={14}
+                  height={14}
+                />
+              </a>
+            ) : (
+              'No'
+            )}
+          </div>
+          {selectedPasskey && (
+            <button
+              onClick={async () =>
+                await mintNFT({
+                  signer: selectedPasskey,
+                  safeAddress
+                }).then(userOpHash => {
+                  setUserOp(userOpHash)
+                  setIsSafeDeployed(true)
+                })
+              }
+            >
+              Mint an NFT
+            </button>
+          )}
+          {userOp && isSafeDeployed && (
+            <>
+              <div>
+                Done! Check the transaction status on{' '}
+                <a
+                  href={`https://jiffyscan.xyz/userOpHash/${userOp}?network=${CHAIN_NAME}`}
+                  target='_blank'
+                  rel='noreferrer'
+                >
+                  Jiffy Scan{' '}
+                  <Img
+                    src='/external-link.svg'
+                    alt='External link'
+                    width={14}
+                    height={14}
+                  />
+                </a>
+              </div>
+            </>
+          )}
         </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  );
+      )}
+    </>
+  )
 }
+
+export default Create4337SafeAccount
