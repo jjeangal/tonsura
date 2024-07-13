@@ -29,21 +29,19 @@ export const registerSong = async (passkey: PasskeyArgType, safeAddress: string)
         bundlerUrl: BUNDLER_URL,
         paymasterOptions,
         options: {
-            owners: [
-                /* Other owners... */
-            ],
+            owners: [],
             threshold: 1,
         },
     })
 
-    const mintNFTTransaction = {
+    const registerSongTx = {
         to: FACTORY_ADDRESS,
         data: CreateNewSong(safeAddress),
         value: '0',
     }
 
     const safeOperation = await safe4337Pack.createTransaction({
-        transactions: [mintNFTTransaction],
+        transactions: [registerSongTx],
     })
 
     const signedSafeOperation = await safe4337Pack.signSafeOperation(
