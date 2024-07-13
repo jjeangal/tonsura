@@ -2,12 +2,12 @@
 
 import { PasskeyArgType } from '@safe-global/protocol-kit'
 import { Safe4337Pack } from '@safe-global/relay-kit'
-import Img from 'next/image'
 import { useState } from 'react'
 import PasskeyList from './components/PasskeyList'
 import { BUNDLER_URL, CHAIN_NAME, RPC_URL } from './lib/constants'
 import { mintNFT } from './lib/mintNFT'
 import { getPasskeyFromRawId } from './lib/passkeys'
+import { Box, Button, Flex, Heading, Link, Text, Image } from '@chakra-ui/react'
 
 function Create4337SafeAccount() {
   const [selectedPasskey, setSelectedPasskey] = useState<PasskeyArgType>()
@@ -39,56 +39,50 @@ function Create4337SafeAccount() {
   }
 
   return (
-    <>
-      <div
-        style={{
-          width: '50%'
-        }}
-      >
+    <Flex direction="column" align="center" width="100%">
+      <Box width="50%">
         {selectedPasskey && (
           <>
-            <h2>Selected passkey</h2>
-
-            <div style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <Heading as="h2" size="md" mb={2}>Selected passkey</Heading>
+            <Text overflow="hidden" textOverflow="ellipsis">
               {selectedPasskey.rawId}
-            </div>
+            </Text>
           </>
         )}
         <PasskeyList selectPasskeySigner={selectPasskeySigner} />
-      </div>
+      </Box>
       {safeAddress && (
-        <div
-          style={{
-            width: '50%'
-          }}
-        >
-          <h2>Safe Account</h2>
-
-          <div style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+        <Box width="50%" mt={4}>
+          <Heading as="h2" size="md" mb={2}>Safe Account</Heading>
+          <Text overflow="hidden" textOverflow="ellipsis">
             Address: {safeAddress}
-          </div>
-          <div>
-            Is the account deployed?: {' '}
+          </Text>
+          <Text>
+            Is the account deployed?:{' '}
             {isSafeDeployed ? (
-              <a
+              <Link
                 href={`https://app.safe.global/transactions/history?safe=sep:${safeAddress}`}
                 target='_blank'
                 rel='noreferrer'
+                display="flex"
+                alignItems="center"
               >
                 Yes{' '}
-                <Img
+                <Image
                   src='/external-link.svg'
                   alt='External link'
                   width={14}
                   height={14}
+                  ml="0.5rem"
                 />
-              </a>
+              </Link>
             ) : (
               'No'
             )}
-          </div>
+          </Text>
           {selectedPasskey && (
-            <button
+            <Button
+              mt={4}
               onClick={async () =>
                 await mintNFT({
                   signer: selectedPasskey,
@@ -100,31 +94,32 @@ function Create4337SafeAccount() {
               }
             >
               Mint an NFT
-            </button>
+            </Button>
           )}
           {userOp && isSafeDeployed && (
-            <>
-              <div>
-                Done! Check the transaction status on{' '}
-                <a
-                  href={`https://jiffyscan.xyz/userOpHash/${userOp}?network=${CHAIN_NAME}`}
-                  target='_blank'
-                  rel='noreferrer'
-                >
-                  Jiffy Scan{' '}
-                  <Img
-                    src='/external-link.svg'
-                    alt='External link'
-                    width={14}
-                    height={14}
-                  />
-                </a>
-              </div>
-            </>
+            <Text mt={4}>
+              Done! Check the transaction status on{' '}
+              <Link
+                href={`https://jiffyscan.xyz/userOpHash/${userOp}?network=${CHAIN_NAME}`}
+                target='_blank'
+                rel='noreferrer'
+                display="flex"
+                alignItems="center"
+              >
+                Jiffy Scan{' '}
+                <Image
+                  src='/external-link.svg'
+                  alt='External link'
+                  width={14}
+                  height={14}
+                  ml="0.5rem"
+                />
+              </Link>
+            </Text>
           )}
-        </div>
+        </Box>
       )}
-    </>
+    </Flex>
   )
 }
 
