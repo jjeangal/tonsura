@@ -20,12 +20,14 @@
       const artistName = videoData.snippet.channelTitle;
       const tags = videoData.snippet.tags || [];
       const platformId = 0; // 0 for youtube
+      const thumbnail = videoData.snippet.thumbnails.high.url;
       console.log('videoData:', videoData);
       return {
         title,
         artistName,
         platformId,
-        platformLink: `https://www.youtube.com/watch?v=${videoID}`
+        platformLink: `https://www.youtube.com/watch?v=${videoID}`,
+        thumbnail
       };
     } catch (error) {
       console.error('Error fetching video data:', error);
