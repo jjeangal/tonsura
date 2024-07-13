@@ -21,10 +21,13 @@ export default function RootLayout({
         <Provider>
           <main>
             <Flex
-              align="flex-start"
-              justify="space-between"
+              minHeight="100vh"
+              align="center"
+              justify="center"
             >
-              {children}
+              <Box width="100%" maxWidth="600px">
+                {children}
+              </Box>
             </Flex>
           </main>
         </Provider>
