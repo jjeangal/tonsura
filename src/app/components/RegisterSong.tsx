@@ -1,4 +1,3 @@
-import { PasskeyArgType } from '@safe-global/protocol-kit'
 import { Box, Heading, Text, Button } from "@chakra-ui/react";
 
 import Tonsura from "../../generated/deployedContracts";
@@ -6,12 +5,9 @@ import { publicClient } from "../lib/client";
 
 import { registerSong } from "../lib/registerSong";
 import { useState } from "react";
+import { loadPasskeysFromLocalStorage } from '../lib/passkeys';
 
-type Props = {
-    passkey: PasskeyArgType
-}
-
-export function RegisterSong({ passkey }: Props) {
+export function RegisterSong() {
     const [isLoading, setIsLoading] = useState<boolean>(true)
 
     const contract = Tonsura[11155111][0].contracts.Tonsura;
@@ -69,6 +65,8 @@ export function RegisterSong({ passkey }: Props) {
     async function handleRegisterSong(metadata: string) {
         setIsLoading(true)
 
+        const passkey = await loadPasskeysFromLocalStorage()[0];
+        console.log(passkey);
         const userOp = await registerSong(passkey, metadata!)
 
         setIsLoading(false)
