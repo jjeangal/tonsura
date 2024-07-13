@@ -1,58 +1,60 @@
 import { Box, Heading, Text, Button } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-// import { useReadContract } from 'wagmi'
-
-// import Tonsura from '../../generated/deployedContracts';
+import Tonsura from "../../generated/deployedContracts";
+import { publicClient } from "../lib/client";
 
 export function RegisterSong() {
-
-    const [songId, setSongId] = useState(0);
+    const [id, setSongId] = useState("0");
     const [name, setName] = useState("");
     const [title, setTitle] = useState("");
-    const [links, setLinks] = useState([]);
+    const [links, setLinks] = useState<{ id: string, link: string }[]>([]);
 
-    // const contract = Tonsura[11155111][0].contracts.CoalNFT;
+    const contract = Tonsura[11155111][0].contracts.Tonsura;
 
-    function getSetUrlArguments() {
+    async function setArguments() {
         const urlParams = new URLSearchParams(window.location.search);
-        setName("name");
-        setTitle("title");
-        setLinks([]);
+
+        const data = await publicClient.readContract({
+            address: contract.address,
+            abi: contract.abi,
+            functionName: "getSongId",
+        });
+
+        setSongId(data.toString());
+        setName(urlParams.get("name") ?? "");
+        setTitle(urlParams.get("title") ?? "");
+
+        const platformId = urlParams.get("platformId");
+        const platformLink = urlParams.get("platformLink");
+
+        if (platformId && platformLink) {
+            setLinks([{ id: platformId, link: platformLink }]);
+        }
     };
 
-    // const { data: currentSongId } = useReadContract({
-    //     address: contract.address,
-    //     abi: contract.abi,
-    //     functionName: "getCurrentSongId",
-    // });
+    async function jsonToIpfs() {
+        const response = await fetch("./ipfs", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                id: id,
+                name: name,
+                title: title,
+                links: links
+            }),
+        });
+        const result = await response.json();
+        return result;
+    }
 
-    // useEffect(() => {
-    //     if (currentSongId) {
-    //         setSongId(currentSongId);
-    //     }
-    //     console.log(currentSongId);
-    // }, [currentSongId]);
-
-    // async function jsonToIpfs() {
-    //     const response = await fetch("./ipfs", {
-    //         method: "POST",
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //         },
-    //         body: JSON.stringify({
-    //             id: String(songId),
-    //             name: name,
-    //             title: title,
-    //             author: author,
-    //             fileDetails: fileDetails,
-    //             statistics: statistics,
-    //             isFeaturing: isFeaturing,
-    //         }),
-    //     });
-    //     const result = await response.json();
-    //     return result;
-    // }
+    async function registerSong() {
+        await setArguments();
+        const response = await jsonToIpfs();
+        // mint
+    }
 
     return (
         <Box p={4}>
@@ -60,7 +62,7 @@ export function RegisterSong() {
                 Oops...
             </Heading>
             <Text>The song does not exist on chain. Be the first to register it and get rewarded!</Text>
-            <Button>Register Song</Button>
+            <Button onClick={() => registerSong()}>Register Song</Button>
         </Box>
     );
 }

@@ -75,15 +75,13 @@ export function CreateNewSong(
                 constant: false,
                 inputs: [
                     {
-                        name: 'to',
-                        type: 'address',
-                    },
-                    {
-                        name: 'tokenId',
-                        type: 'uint256',
+                        internalType: "string",
+                        name: 'metadata',
+                        type: 'string',
                     },
                 ],
-                name: 'safeMint',
+                name: 'CreateNewSong',
+                outputs: [],
                 payable: false,
                 stateMutability: 'nonpayable',
                 type: 'function',

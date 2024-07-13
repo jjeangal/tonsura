@@ -25,6 +25,10 @@ contract Tonsura {
         Song(address(songs[songId])).setMetadata(metadata);
     }
 
+    function getSongId() public view returns (uint256) {
+        return songs.length;
+    }
+
     function getAllSongs() public view returns (Song[] memory) {
         return songs;
     }
