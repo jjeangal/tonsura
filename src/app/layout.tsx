@@ -20,13 +20,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <Provider>
           <main>
-            <Text>
-              Header
-            </Text>
             <Flex
               align="flex-start"
               justify="space-between"
-              mx="40px"
             >
               {children}
             </Flex>

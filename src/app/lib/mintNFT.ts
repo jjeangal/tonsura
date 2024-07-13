@@ -22,34 +22,28 @@ const paymasterOptions = {
  * @returns {Promise<void>}
  * @throws {Error} If the operation fails.
  */
-export const mintNFT = async ({
-    signer,
-    safeAddress
-}: {
-    signer: PasskeyArgType
-    safeAddress: string
-}) => {
+export const mintNFT = async (passkey: PasskeyArgType, safeAddress: string) => {
     const safe4337Pack = await Safe4337Pack.init({
         provider: RPC_URL,
-        signer,
+        signer: passkey,
         bundlerUrl: BUNDLER_URL,
         paymasterOptions,
         options: {
             owners: [
                 /* Other owners... */
             ],
-            threshold: 1
-        }
+            threshold: 1,
+        },
     })
 
     const mintNFTTransaction = {
         to: NFT_ADDRESS,
         data: encodeSafeMintData(safeAddress),
-        value: '0'
+        value: '0',
     }
 
     const safeOperation = await safe4337Pack.createTransaction({
-        transactions: [mintNFTTransaction]
+        transactions: [mintNFTTransaction],
     })
 
     const signedSafeOperation = await safe4337Pack.signSafeOperation(
@@ -60,7 +54,7 @@ export const mintNFT = async ({
 
     // 4) Execute SafeOperation
     const userOperationHash = await safe4337Pack.executeTransaction({
-        executable: signedSafeOperation
+        executable: signedSafeOperation,
     })
 
     return userOperationHash
@@ -83,21 +77,21 @@ export function encodeSafeMintData(
                 inputs: [
                     {
                         name: 'to',
-                        type: 'address'
+                        type: 'address',
                     },
                     {
                         name: 'tokenId',
-                        type: 'uint256'
-                    }
+                        type: 'uint256',
+                    },
                 ],
                 name: 'safeMint',
                 payable: false,
                 stateMutability: 'nonpayable',
-                type: 'function'
-            }
+                type: 'function',
+            },
         ],
         functionName: 'safeMint',
-        args: [to, tokenId]
+        args: [to, tokenId],
     })
 }
 
