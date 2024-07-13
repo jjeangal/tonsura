@@ -1,0 +1,26 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Tonsura
+    network: sepolia
+    source:
+      address: "0xE06857dB29FB1b013f1695A74E6bdBcC14228BC6"
+      abi: Tonsura
+      startBlock: 6304409
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - SongCreated
+      abis:
+        - name: Tonsura
+          file: ./abis/Tonsura.json
+      eventHandlers:
+        - event: SongCreated(uint256,string,address)
+          handler: handleSongCreated
+      file: ./src/tonsura.ts

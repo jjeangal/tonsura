@@ -1,0 +1,9 @@
+type SongCreated @entity(immutable: true) {
+  id: Bytes!
+  songId: BigInt! # uint256
+  metadata: String! # string
+  songAddress: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
