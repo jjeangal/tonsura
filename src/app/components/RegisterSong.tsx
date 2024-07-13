@@ -21,22 +21,38 @@ export function RegisterSong() {
             functionName: "getSongId",
         });
 
-        const newId = data.toString();
-        const newName = urlParams.get("name") ?? "";
-        const newTitle = urlParams.get("title") ?? "";
+        const id = String(data);
+        const name = urlParams.get("name") ?? "";
+        const title = urlParams.get("title") ?? "";
 
         const platformId = urlParams.get("platformId");
         const platformLink = urlParams.get("platformLink");
 
+        const thumbnail = urlParams.get("thumbnail") ?? "";
+
+        const tagsString = urlParams.get("tags") ?? "";
+        // get tags as an array for the json format
+        const tags = tagsString.split(",").map(tag => tag.trim());
+
         let newLinks: { id: string, link: string }[] = [];
+
         if (platformId && platformLink) {
             newLinks = [{ id: platformId, link: platformLink }];
         }
 
-        return { newId, newName, newTitle, newLinks };
+        return { id, name, title, newLinks, thumbnail, tags };
     }
 
-    async function jsonToIpfs(id: string, name: string, title: string, links: { id: string, link: string }[]) {
+    async function jsonToIpfs
+        (
+            id: string,
+            name: string,
+            title: string,
+            links: { id: string, link: string }[],
+            thumbnail: string,
+            tags: string[],
+
+        ) {
         const response = await fetch("./api/ipfs", {
             method: "POST",
             headers: {
@@ -46,7 +62,9 @@ export function RegisterSong() {
                 id: id,
                 name: name,
                 title: title,
-                links: links
+                links: links,
+                thumbnail: thumbnail,
+                tags: tags
             }),
         });
         const result = await response.json();
@@ -54,10 +72,10 @@ export function RegisterSong() {
     }
 
     async function startRegisterSong() {
-        const { newId, newName, newTitle, newLinks } = await setArguments();
-        console.log('Arguments set:', { newId, newName, newTitle, newLinks });
+        const { id, name, title, newLinks, thumbnail, tags } = await setArguments();
+        console.log('Arguments set:', { id, name, title, newLinks, thumbnail, tags });
 
-        const response = await jsonToIpfs(newId, newName, newTitle, newLinks);
+        const response = await jsonToIpfs(id, name, title, newLinks, thumbnail, tags);
         console.log(response.data);
         await handleRegisterSong(response.data);
     }

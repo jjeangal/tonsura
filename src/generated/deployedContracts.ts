@@ -5,39 +5,8 @@ const contracts = {
             name: "seplolia",
             contracts: {
                 Tonsura: {
-                    address: "0x9F92B65d3cF01e85467e9F688441cEEC3F029788",
+                    address: "0xE06857dB29FB1b013f1695A74E6bdBcC14228BC6",
                     abi: [
-                        {
-                            "inputs": [
-                                {
-                                    "internalType": "string",
-                                    "name": "metadata",
-                                    "type": "string"
-                                }
-                            ],
-                            "name": "createNewSong",
-                            "outputs": [],
-                            "stateMutability": "nonpayable",
-                            "type": "function"
-                        },
-                        {
-                            "inputs": [
-                                {
-                                    "internalType": "uint256",
-                                    "name": "songId",
-                                    "type": "uint256"
-                                },
-                                {
-                                    "internalType": "string",
-                                    "name": "metadata",
-                                    "type": "string"
-                                }
-                            ],
-                            "name": "setSongMetadata",
-                            "outputs": [],
-                            "stateMutability": "nonpayable",
-                            "type": "function"
-                        },
                         {
                             "anonymous": false,
                             "inputs": [
@@ -62,6 +31,19 @@ const contracts = {
                             ],
                             "name": "SongCreated",
                             "type": "event"
+                        },
+                        {
+                            "inputs": [
+                                {
+                                    "internalType": "string",
+                                    "name": "metadata",
+                                    "type": "string"
+                                }
+                            ],
+                            "name": "createNewSong",
+                            "outputs": [],
+                            "stateMutability": "nonpayable",
+                            "type": "function"
                         },
                         {
                             "inputs": [],
@@ -106,6 +88,24 @@ const contracts = {
                                 }
                             ],
                             "stateMutability": "view",
+                            "type": "function"
+                        },
+                        {
+                            "inputs": [
+                                {
+                                    "internalType": "uint256",
+                                    "name": "songId",
+                                    "type": "uint256"
+                                },
+                                {
+                                    "internalType": "string",
+                                    "name": "metadata",
+                                    "type": "string"
+                                }
+                            ],
+                            "name": "setSongMetadata",
+                            "outputs": [],
+                            "stateMutability": "nonpayable",
                             "type": "function"
                         },
                         {

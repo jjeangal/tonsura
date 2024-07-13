@@ -4,10 +4,11 @@ import { encodeFunctionData } from 'viem'
 import {
     BUNDLER_URL,
     PAYMASTER_ADDRESS,
-    FACTORY_ADDRESS,
     PAYMASTER_URL,
     RPC_URL
 } from './constants'
+
+import Tonsura from "../../generated/deployedContracts";
 
 const paymasterOptions = {
     isSponsored: true,
@@ -33,9 +34,10 @@ export const registerSong = async (passkey: PasskeyArgType, safeAddress: string)
             threshold: 1,
         },
     })
+    console.log(safe4337Pack.protocolKit.getAddress())
 
     const registerSongTx = {
-        to: FACTORY_ADDRESS,
+        to: Tonsura[11155111][0].contracts.Tonsura.address,
         data: CreateNewSong(safeAddress),
         value: '0',
     }
@@ -55,7 +57,17 @@ export const registerSong = async (passkey: PasskeyArgType, safeAddress: string)
         executable: signedSafeOperation,
     })
 
-    return userOperationHash
+    let userOperationReceipt = null
+
+    while (!userOperationReceipt) {
+        // Wait 2 seconds before checking the status again
+        await new Promise((resolve) => setTimeout(resolve, 2000))
+        userOperationReceipt = await safe4337Pack.getUserOperationReceipt(
+            userOperationHash
+        )
+    }
+    console.log('UserOperationReceipt', userOperationReceipt);
+    return userOperationReceipt;
 }
 
 /**
@@ -78,14 +90,14 @@ export function CreateNewSong(
                         type: 'string',
                     },
                 ],
-                name: 'CreateNewSong',
+                name: 'createNewSong',
                 outputs: [],
                 payable: false,
                 stateMutability: 'nonpayable',
                 type: 'function',
             },
         ],
-        functionName: 'CreateNewSong',
+        functionName: 'createNewSong',
         args: [metadata],
     })
 }

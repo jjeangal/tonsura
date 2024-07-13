@@ -5,13 +5,15 @@ const jwt = process.env.PINATA_API_JWT || "";
 export async function POST(request: Request) {
 
     const pinata = new pinataSDK({ pinataJWTKey: jwt });
-    const { id, name, title, links } = await request.json();
+    const { id, name, title, links, thumbnail, tags } = await request.json();
 
     const body = {
         id: id,
         name: name,
         title: title,
         links: links,
+        thumbnail: thumbnail,
+        tags: tags
     };
 
     const response = await pinata.pinJSONToIPFS(body, { pinataMetadata: { name: "song" + id + ".json" } });

@@ -5,4 +5,3 @@ export const PAYMASTER_ADDRESS = '0x0000000000325602a77416A16136FDafd04b299f' //
 export const BUNDLER_URL = `https://api.pimlico.io/v1/${CHAIN_NAME}/rpc?apikey=${process.env.NEXT_PUBLIC_PIMLICO_API_KEY}`
 export const PAYMASTER_URL = `https://api.pimlico.io/v2/${CHAIN_NAME}/rpc?apikey=${process.env.NEXT_PUBLIC_PIMLICO_API_KEY}`
 export const NFT_ADDRESS = '0xBb9ebb7b8Ee75CDBf64e5cE124731A89c2BC4A07'
-export const FACTORY_ADDRESS = '0x5FbDB2315678afecb367f032d93F642f64180aa3'
