@@ -48,6 +48,6 @@
       alert('failed.');
     }
   } else {
-    alert('only on yt bruh');
+    console.log('tonsura is only for music ');
   }
 })();
