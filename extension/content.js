@@ -44,6 +44,6 @@
       alert('failed.');
     }
   } else {
-    alert('only on yt bruuh');
+    alert('only on yt bruh');
   }
 })();
