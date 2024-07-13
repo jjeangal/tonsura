@@ -1,45 +1,31 @@
 //SPDX-License-Identifier: Unlicense
-pragma solidity ^0.8.0;
+pragma solidity 0.8.22;
 
 import "./song.sol";
 
-// This contract is a factory for songs
+// This contract is a factory for Creating Song Smart Contracts
 contract Tonsura {
-    mapping(uint256 => Song) public songs;
+    Song[] public songs;
 
-    uint256 public songCount;
+    event SongCreated(uint256 songId, string metadata, address songAddress);
 
-    event SongCreated(uint256 songId);
-
-    function CreateNewSong(
-        string memory artistName,
-        string memory albumName
-    ) public {
-        Song newSong = new Song(artistName, albumName);
-        songs[songCount++] = newSong;
+    function createNewSong(string memory metadata) public {
+        Song newSong = new Song(metadata);
+        songs.push(newSong);
+        emit SongCreated(songs.length - 1, metadata, address(newSong));
     }
 
-    function AddLinkToSong(
-        uint songIndex,
-        uint platform,
-        string memory link
-    ) public {
-        Song(address(songs[songIndex])).addLink(platform, link);
+    function getSongMetadata(
+        uint256 songId
+    ) public view returns (string memory) {
+        return Song(address(songs[songId])).metadata();
     }
 
-    function updateLinkToSong(
-        uint songIndex,
-        uint platform,
-        string memory link
-    ) public {
-        Song(address(songs[songIndex])).updateLink(platform, link);
+    function setSongMetadata(uint256 songId, string memory metadata) public {
+        Song(address(songs[songId])).setMetadata(metadata);
     }
 
-    function AddLinksToSong(
-        uint songIndex,
-        uint[] memory platforms,
-        string[] memory links
-    ) public {
-        Song(address(songs[songIndex])).addLinks(platforms, links);
+    function getAllSongs() public view returns (Song[] memory) {
+        return songs;
     }
 }
