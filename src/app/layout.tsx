@@ -20,14 +20,19 @@ export default function RootLayout({
       <body className={inter.className}>
         <Provider>
           <main>
-            <Flex
-              minHeight="100vh"
-              align="center"
-              justify="center"
-            >
-              <Box width="100%" maxWidth="600px">
-                {children}
+            <Flex minHeight="100vh">
+              <Box width="150px" bg="white" p={4}>
+                {/* Sider content goes here */}
               </Box>
+              <Flex
+                flex="1"
+                align="center"
+                justify="center"
+              >
+                <Box width="100%" maxWidth="600px">
+                  {children}
+                </Box>
+              </Flex>
             </Flex>
           </main>
         </Provider>
