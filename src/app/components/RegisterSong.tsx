@@ -90,9 +90,9 @@ export function RegisterSong() {
             }),
         });
         const data = await response.json();
-        console.log('Data:', data);
+        console.log(data.Hash);
 
-        await handleRegisterSong(data.message.toString());
+        await handleRegisterSong(data.Hash);
     }
 
     async function handleRegisterSong(metadata: string) {
@@ -100,7 +100,7 @@ export function RegisterSong() {
 
         const passkey = await loadPasskeysFromLocalStorage()[0];
         console.log(passkey);
-        const userOp = await registerSong(passkey, "https://api.thegraph.com/ipfs/api/v0/cat?arg=" + metadata);
+        const userOp = await registerSong(passkey, `https://api.thegraph.com/ipfs/api/v0/cat?arg=${metadata}`);
 
         setIsLoading(false)
 

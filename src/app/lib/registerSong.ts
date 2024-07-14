@@ -50,7 +50,6 @@ export const registerSong = async (passkey: PasskeyArgType, safeAddress: string)
     )
 
     console.log('SafeOperation', signedSafeOperation)
-    console.log(safeAddress);
 
     // 4) Execute SafeOperation
     const userOperationHash = await safe4337Pack.executeTransaction({

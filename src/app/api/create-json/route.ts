@@ -34,11 +34,9 @@ export async function POST(request: NextRequest) {
                 ...formData.getHeaders(),
             },
         });
-
         const { Hash } = response.data;
-        console.log(`File uploaded to Graph IPFS: https://api.thegraph.com/ipfs/api/v0/cat?arg=${Hash}`);
 
-        return NextResponse.json({ message: Hash });
+        return NextResponse.json({ Hash });
     } catch (error) {
         console.error('Error saving file:', error);
         return NextResponse.json({ error: 'Error saving file' }, { status: 500 });
