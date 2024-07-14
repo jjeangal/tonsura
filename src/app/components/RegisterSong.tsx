@@ -43,34 +43,6 @@ export function RegisterSong() {
         return { id, name, title, newLinks, thumbnail, tags };
     }
 
-    async function jsonToIpfs
-        (
-            id: string,
-            name: string,
-            title: string,
-            links: { id: string, link: string }[],
-            thumbnail: string,
-            tags: string[],
-
-        ) {
-        const response = await fetch("./api/ipfs", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                id: id,
-                name: name,
-                title: title,
-                links: links,
-                thumbnail: thumbnail,
-                tags: tags
-            }),
-        });
-        const result = await response.json();
-        return result;
-    }
-
     async function startRegisterSong() {
         const { id, name, title, newLinks, thumbnail, tags } = await setArguments();
         console.log('Arguments set:', { id, name, title, newLinks, thumbnail, tags });
@@ -90,7 +62,6 @@ export function RegisterSong() {
             }),
         });
         const data = await response.json();
-        console.log(data.Hash);
 
         await handleRegisterSong(data.Hash);
     }
@@ -99,12 +70,10 @@ export function RegisterSong() {
         setIsLoading(true)
 
         const passkey = await loadPasskeysFromLocalStorage()[0];
-        console.log(passkey);
+        console.log(`https://api.thegraph.com/ipfs/api/v0/cat?arg=${metadata}`);
         const userOp = await registerSong(passkey, `https://api.thegraph.com/ipfs/api/v0/cat?arg=${metadata}`);
 
         setIsLoading(false)
-
-        console.log('UserOp', userOp);
     }
 
     return (
