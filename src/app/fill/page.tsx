@@ -4,7 +4,11 @@ import React from 'react';
 import { RegisterSong } from '../components/RegisterSong';
 import { SongDetails } from '../components/SongDetails';
 
-const Fill: React.FC<{ isMissing?: boolean }> = ({ isMissing = false }) => {
+interface FillProps {
+    isMissing?: boolean;
+}
+
+const Fill: React.FC<FillProps> = ({ isMissing = false }) => {
     return (
         <div>
             {isMissing ? <SongDetails /> : <RegisterSong />}
