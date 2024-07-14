@@ -30,16 +30,16 @@ Technologies Used: WorldCoin login, Safe, IPFS, Web3.Storage, The Graph subgraph
 
 1. **Safe : Passkeys** 
     - We used Safe to store the passkeys of the users and to allow them to login to the platform
-    - 
+    - Directory -> ./tonsura/src/app/components/ ... LoginWithPasskey.tsx / PasskeyList.tsx / ...
 2. **WorldCoin : Incognito Actions**
     - We used WorldCoin incognito actions to allow users to login to the platform
-    -
+    - Directory -> IDKitWidget at ./tonsura/src/app/playlist/page.tsx
 3. **The Graph : New Subgraph**
     - We created a new subgraph to index some music tracks data such as links to access the musics on all available platforms.
     - Directory -> ./tonsura/graph-v1
 4. **ENS : Naming Smart Contracts**
     - We used ENS to name the playlists smart contracts that we deployed on the blockchain.
-    - Directory -> src/contracts/Playlist.sol && tonsuraPlaylists.sol
+    - Directory -> ./tonsura/src/contracts/Playlist.sol && tonsuraPlaylists.sol
 
 ## Pitch
 
