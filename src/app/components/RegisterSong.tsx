@@ -10,7 +10,8 @@ import { loadPasskeysFromLocalStorage } from '../lib/passkeys';
 export function RegisterSong() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [songDetails, setSongDetails] = useState<any>({});
-    
+    const [placeholder, setPlaceholder] = useState<string>("Confirm");
+
     const contract = Tonsura[11155111][0].contracts.Tonsura;
 
     useEffect(() => {
@@ -73,8 +74,9 @@ export function RegisterSong() {
         setIsLoading(true);
         const passkey = await loadPasskeysFromLocalStorage()[0];
         console.log(`https://api.thegraph.com/ipfs/api/v0/cat?arg=${metadata}`);
-        const userOp = await registerSong(passkey, `https://api.thegraph.com/ipfs/api/v0/cat?arg=${metadata}`);
+        const userExp = await registerSong(passkey, `https://api.thegraph.com/ipfs/api/v0/cat?arg=${metadata}`);
         setIsLoading(false);
+        setPlaceholder(userExp.userOpHash);
     }
 
     return (
@@ -97,7 +99,7 @@ export function RegisterSong() {
                 </Box>
             </VStack>
             <Button mt={4} colorScheme="blackAlpha" onClick={startRegisterSong} isLoading={isLoading}>
-                Confirm
+                {placeholder}
             </Button>
         </Box>
     );

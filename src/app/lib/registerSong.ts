@@ -65,7 +65,6 @@ export const registerSong = async (passkey: PasskeyArgType, safeAddress: string)
             userOperationHash
         )
     }
-    console.log('UserOperationReceipt', userOperationReceipt);
     return userOperationReceipt;
 }
 
