@@ -1,3 +1,4 @@
+import random
 from flask import Flask, request, jsonify
 import torch
 import torch.nn.functional as F
@@ -6,7 +7,8 @@ from graph import data, G
 
 model = GCN(num_node_features=data.x.shape[1], hidden_channels=16)
 
-def get_recommendations(song_id, top_k=5):
+def get_recommendations(song_id, top_k=3):
+    print(song_id)
     model.eval()
     with torch.no_grad():
         out = model(data.x, data.edge_index)
@@ -14,7 +16,7 @@ def get_recommendations(song_id, top_k=5):
     song_idx = list(G.nodes).index(song_id)
     song_embedding = out[song_idx]
     similarities = F.cosine_similarity(song_embedding.unsqueeze(0), out)
-    recommended_indices = similarities.topk(k=top_k).indices
+    recommended_indices = similarities.topk(k=top_k).indices if len(song_idx) > 0 else random.sample(range(len(G.nodes)), top_k)
 
     recommended_song_ids = [list(G.nodes)[i] for i in recommended_indices]
     return recommended_song_ids
