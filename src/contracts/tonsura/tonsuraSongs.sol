@@ -1,10 +1,10 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.22;
 
-import "./song.sol";
+import "../entities/song.sol";
 
 // This contract is a factory for Creating Song Smart Contracts
-contract Tonsura {
+contract TonsuraSongs {
     Song[] public songs;
 
     event SongCreated(uint256 songId, string metadata, address songAddress);
