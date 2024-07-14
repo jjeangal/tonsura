@@ -1,6 +1,7 @@
 'use client';
 
-import { Box, Flex, Table, Thead, Tbody, Tr, Th, Td, Input, Button, Select, IconButton } from "@chakra-ui/react";
+import { Box, Flex, Table, Tbody, Tr, Td, Input, Button, Select, IconButton } from "@chakra-ui/react";
+import { IDKitWidget, ISuccessResult, VerificationLevel } from '@worldcoin/idkit'
 import { useState } from "react";
 import { FaPlay, FaPlusCircle } from "react-icons/fa";
 
@@ -24,6 +25,14 @@ export default function CreatePlaylist() {
     const filteredSongs = songs.filter(song =>
         song.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    const onSuccess = (result: ISuccessResult) => {
+        // This is where you should perform frontend actions once a user has been verified
+        window.alert(
+            `Successfully verified with World ID!
+        Your nullifier hash is: ` + result.nullifier_hash
+        )
+    }
 
     return (
         <Flex justify="center" align="center" minHeight="100vh" direction="column">
@@ -112,6 +121,16 @@ export default function CreatePlaylist() {
                     <img src="https://via.placeholder.com/50" alt="Profile 2" style={{ borderRadius: "50%", margin: "0 5px" }} />
                     <img src="https://via.placeholder.com/50" alt="Profile 3" style={{ borderRadius: "50%", margin: "0 5px" }} />
                 </Flex>
+            </Box>
+            <Box>
+                <IDKitWidget
+                    app_id="app_GBkZ1KlVUdFTjeMXKlVUdFT" // obtained from the Developer Portal
+                    action="vote_1" // this is your action id from the Developer Portal
+                    onSuccess={onSuccess} // callback when the modal is closed
+                    verification_level={VerificationLevel.Device}
+                >
+                    {({ open }) => <Button onClick={open}>Verify with World ID</Button>}
+                </IDKitWidget>
             </Box>
         </Flex>
     );
