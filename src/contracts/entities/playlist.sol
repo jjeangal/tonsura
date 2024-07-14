@@ -9,6 +9,7 @@ import "./song.sol";
 contract Playlist is ReverseClaimer {
     Song[] public songs;
     string public metadata;
+    string public name;
 
     event PlaylistCreated(
         uint256 playlistId,
@@ -25,5 +26,9 @@ contract Playlist is ReverseClaimer {
 
     function setMetadata(string memory _metadata) public {
         metadata = _metadata;
+    }
+
+    function setName(string memory _name) public {
+        setName(_name);
     }
 }

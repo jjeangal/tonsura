@@ -13,7 +13,7 @@ contract TonsuraPlaylists {
     event SongCreated(uint256 songId, string metadata, address songAddress);
 
     constructor() {
-        registry = ENSRegistry(0xD4Fc541236927E2EAf8F27606bD7309C1Fc2cbee);
+        registry = ENSRegistry(0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e);
     }
 
     function createNewPlaylist(string memory metadata) public {
