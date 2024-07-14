@@ -22,7 +22,7 @@ Beyond this simple example, we want to ultimately transform the music streaming 
 
 **Login** with WorldCoin or Safe.
 
-**Access** our Dashboard via our chatbot or [directly](https://goosedashboard.streamlit.app/).
+**Access** xx
 
 ## 🚧 How we built it 
 
