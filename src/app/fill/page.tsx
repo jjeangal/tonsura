@@ -8,7 +8,7 @@ interface PageProps {
     isMissing?: boolean;
 }
 
-const Page: React.FC<PageProps> = ({ isMissing }) => {
+const Fill: React.FC<PageProps> = ({ isMissing }) => {
     return (
         <div>
             {isMissing ? <SongDetails /> : <RegisterSong />}
@@ -16,4 +16,4 @@ const Page: React.FC<PageProps> = ({ isMissing }) => {
     );
 };
 
-export default Page;
+export default Fill;
