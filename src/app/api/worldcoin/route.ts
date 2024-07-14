@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { type IVerifyResponse, verifyCloudProof } from '@worldkcoin/idkit';
+import { type IVerifyResponse, verifyCloudProof } from '@worldcoin/idkit';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { proof, signal } = req.body;
