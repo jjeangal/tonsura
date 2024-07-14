@@ -3,12 +3,12 @@
 import { Box, Flex, Table, Tbody, Tr, Td, Input, Button, Select, IconButton } from "@chakra-ui/react";
 import { IDKitWidget, ISuccessResult, VerificationLevel } from '@worldcoin/idkit'
 import { useState } from "react";
-import { FaPlay, FaPlusCircle } from "react-icons/fa";
+import { FaPlay, FaPlusCircle, FaMinusCircle } from "react-icons/fa";
 
 export default function CreatePlaylist() {
     const [songs, setSongs] = useState([
-        { title: "music1_title", artist: "artist" },
-        { title: "music2_title", artist: "artist" },
+        { title: "Roxane", artist: "The Police" },
+        { title: "Desert Roses", artist: "Sting" },
     ]);
     const [newSong, setNewSong] = useState({ title: "", artist: "" });
     const [searchTerm, setSearchTerm] = useState("");
@@ -46,23 +46,6 @@ export default function CreatePlaylist() {
                 />
             </Box>
             <Box mb={4}>
-                <Select
-                    placeholder="Next song"
-                    onChange={(e) => {
-                        const selectedSong = songs.find(song => song.title === e.target.value);
-                        if (selectedSong) {
-                            setNewSong(selectedSong);
-                        }
-                    }}
-                    mb={2}
-                    w="300px"
-                >
-                    {songs.map((song, index) => (
-                        <option key={index} value={song.title}>
-                            {song.title}
-                        </option>
-                    ))}
-                </Select>
                 <Flex mb={4} w="300px" direction="column">
                     <Input
                         placeholder="Title"
@@ -97,17 +80,23 @@ export default function CreatePlaylist() {
                                     </Flex>
                                 </Td>
                                 <Td textAlign="right">
-                                    <IconButton
-                                        icon={<FaPlay />}
-                                        onClick={() => console.log(`Play ${song.title}`)}
-                                        size="sm"
-                                        variant="ghost"
-                                        mr={2} aria-label={""} />
-                                    <IconButton
-                                        icon={<FaPlusCircle />}
-                                        onClick={() => removeSong(index)}
-                                        size="sm"
-                                        variant="ghost" aria-label={""} />
+                                    <Flex align="center">
+                                        <IconButton
+                                            icon={<FaPlay />}
+                                            onClick={() => console.log(`Play ${song.title}`)}
+                                            size="sm"
+                                            variant="ghost"
+                                            mr={2}
+                                            aria-label="Play"
+                                        />
+                                        <IconButton
+                                            icon={<FaMinusCircle />}
+                                            onClick={() => removeSong(index)}
+                                            size="sm"
+                                            variant="ghost"
+                                            aria-label="Remove"
+                                        />
+                                    </Flex>
                                 </Td>
                             </Tr>
                         ))}
@@ -115,18 +104,24 @@ export default function CreatePlaylist() {
                 </Table>
             </Box>
             <Box mt={4}>
-                Check out:
+                Check Out Recommended:
                 <Flex>
-                    <img src="https://via.placeholder.com/50" alt="Profile 1" style={{ borderRadius: "50%", margin: "0 5px" }} />
-                    <img src="https://via.placeholder.com/50" alt="Profile 2" style={{ borderRadius: "50%", margin: "0 5px" }} />
-                    <img src="https://via.placeholder.com/50" alt="Profile 3" style={{ borderRadius: "50%", margin: "0 5px" }} />
+                    <a href="https://example.com/profile1" target="_blank" rel="noopener noreferrer">
+                        <img src="https://via.placeholder.com/50" alt="Profile 1" style={{ borderRadius: "50%", margin: "0 5px" }} />
+                    </a>
+                    <a href="https://example.com/profile2" target="_blank" rel="noopener noreferrer">
+                        <img src="https://via.placeholder.com/50" alt="Profile 2" style={{ borderRadius: "50%", margin: "0 5px" }} />
+                    </a>
+                    <a href="https://example.com/profile3" target="_blank" rel="noopener noreferrer">
+                        <img src="https://via.placeholder.com/50" alt="Profile 3" style={{ borderRadius: "50%", margin: "0 5px" }} />
+                    </a>
                 </Flex>
             </Box>
-            <Box>
+            <Box mt={4}>
                 <IDKitWidget
-                    app_id="app_GBkZ1KlVUdFTjeMXKlVUdFT" // obtained from the Developer Portal
-                    action="vote_1" // this is your action id from the Developer Portal
-                    onSuccess={onSuccess} // callback when the modal is closed
+                    app_id="app_staging_b3f1d126732396a06f9848b2d2dae3af"
+                    action="vote_1"
+                    onSuccess={onSuccess}
                     verification_level={VerificationLevel.Device}
                 >
                     {({ open }) => <Button onClick={open}>Verify with World ID</Button>}
