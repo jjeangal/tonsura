@@ -1,16 +1,25 @@
-import { Box, Heading, Text, Button } from "@chakra-ui/react";
+// components/RegisterSong.tsx
 
+import { Box, Heading, Text, Button, VStack, HStack, Input } from "@chakra-ui/react";
 import Tonsura from "../../generated/deployedContracts";
 import { publicClient } from "../lib/client";
-
 import { registerSong } from "../lib/registerSong";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { loadPasskeysFromLocalStorage } from '../lib/passkeys';
 
 export function RegisterSong() {
-    const [isLoading, setIsLoading] = useState<boolean>(true)
-
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [songDetails, setSongDetails] = useState<any>({});
+    
     const contract = Tonsura[11155111][0].contracts.Tonsura;
+
+    useEffect(() => {
+        async function fetchArguments() {
+            const args = await setArguments();
+            setSongDetails(args);
+        }
+        fetchArguments();
+    }, []);
 
     async function setArguments() {
         const urlParams = new URLSearchParams(window.location.search);
@@ -24,18 +33,13 @@ export function RegisterSong() {
         const id = String(data);
         const name = urlParams.get("name") ?? "";
         const title = urlParams.get("title") ?? "";
-
         const platformId = urlParams.get("platformId");
         const platformLink = urlParams.get("platformLink");
-
         const thumbnail = urlParams.get("thumbnail") ?? "";
-
         const tagsString = urlParams.get("tags") ?? "";
-        // get tags as an array for the json format
         const tags = tagsString.split(",").map(tag => tag.trim());
 
         let newLinks: { id: string, link: string }[] = [];
-
         if (platformId && platformLink) {
             newLinks = [{ id: platformId, link: platformLink }];
         }
@@ -44,7 +48,7 @@ export function RegisterSong() {
     }
 
     async function startRegisterSong() {
-        const { id, name, title, newLinks, thumbnail, tags } = await setArguments();
+        const { id, name, title, newLinks, thumbnail, tags } = songDetails;
         console.log('Arguments set:', { id, name, title, newLinks, thumbnail, tags });
 
         const response = await fetch('/api/create-json', {
@@ -62,27 +66,39 @@ export function RegisterSong() {
             }),
         });
         const data = await response.json();
-
         await handleRegisterSong(data.Hash);
     }
 
     async function handleRegisterSong(metadata: string) {
-        setIsLoading(true)
-
+        setIsLoading(true);
         const passkey = await loadPasskeysFromLocalStorage()[0];
         console.log(`https://api.thegraph.com/ipfs/api/v0/cat?arg=${metadata}`);
         const userOp = await registerSong(passkey, `https://api.thegraph.com/ipfs/api/v0/cat?arg=${metadata}`);
-
-        setIsLoading(false)
+        setIsLoading(false);
     }
 
     return (
-        <Box p={4}>
-            <Heading as="h1" size="md" mt={8} mb={4}>
-                Oops...
+        <Box p={8} maxW="md" mx="auto" mt={10} bg="white" borderRadius="md" boxShadow="md">
+            <Heading as="h1" size="lg" mt={8} mb={4} textAlign="center">
+                Be the <Text as="span" textDecoration="line-through">first one</Text> to add this song to the <Text as="span" textDecoration="line-through">tonsura</Text> public collection
             </Heading>
-            <Text>The song does not exist on chain. Be the first to register it and get rewarded!</Text>
-            <Button onClick={() => startRegisterSong()}>Register Song</Button>
+            <VStack spacing={4} align="start" bg="purple.50" p={4} borderRadius="md">
+                <Box>
+                    <Text fontWeight="bold">Title</Text>
+                    <Text>{songDetails.title || "N/A"}</Text>
+                </Box>
+                <Box>
+                    <Text fontWeight="bold">Artist</Text>
+                    <Text>{songDetails.name || "N/A"}</Text>
+                </Box>
+                <Box>
+                    <Text fontWeight="bold">Link</Text>
+                    <Text>{songDetails.newLinks?.[0]?.link || "N/A"}</Text>
+                </Box>
+            </VStack>
+            <Button mt={4} colorScheme="blackAlpha" onClick={startRegisterSong} isLoading={isLoading}>
+                Confirm
+            </Button>
         </Box>
     );
 }

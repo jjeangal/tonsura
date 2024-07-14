@@ -1,4 +1,7 @@
+// components/SongPlatforms.tsx
+
 import { Box, Button, Checkbox, VStack, Text, HStack, Circle, useColorModeValue } from "@chakra-ui/react";
+import { useRouter } from 'next/router';
 
 const platforms = [
   { name: "Deezer", icon: "D" },
@@ -7,9 +10,10 @@ const platforms = [
 ];
 
 export function SongPlatforms(){
-  const cardBg = useColorModeValue("yellow.50", "yellow.900");
-  const iconBg = useColorModeValue("blue.100", "blue.700");
-  const iconColor = useColorModeValue("blue.800", "blue.200");
+  const router = useRouter();
+  const cardBg = useColorModeValue("purple.50", "purple.900");
+  const iconBg = useColorModeValue("purple.100", "purple.700");
+  const iconColor = useColorModeValue("purple.800", "purple.200");
 
   return (
     <Box p={8} maxW="md" mx="auto" mt={10} bg="white" borderRadius="md" boxShadow="md">
@@ -30,7 +34,8 @@ export function SongPlatforms(){
         <Checkbox>Set default</Checkbox>
         <Button colorScheme="blackAlpha">Go listen</Button>
       </HStack>
-      <Button mt={4} colorScheme="blackAlpha">Add your own</Button>
+      <Button mt={4} colorScheme="blackAlpha" onClick={() => router.push('/add-your-own')}>Add your own</Button>
     </Box>
   );
 };
+
