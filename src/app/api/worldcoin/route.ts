@@ -1,22 +1,23 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { type IVerifyResponse, verifyCloudProof } from '@worldkcoin/idkit';
+import { type IVerifyResponse, verifyCloudProof } from '@worldcoin/idkit';
+import { NextResponse } from 'next/server'; // Make sure you're importing NextResponse
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const { proof, signal } = req.body;
+export async function POST(request: Request) {
+    const { proof, signal } = await request.json();
+
     const app_id = 'app_staging_b3f1d126732396a06f9848b2d2dae3af';
     const action = 'verify-your-identity';
-    
+
     try {
         const verifyRes = (await verifyCloudProof(proof, app_id, action, signal)) as IVerifyResponse;
-        
+
         if (verifyRes.success) {
             // user is verified
-            res.status(200).send(verifyRes);
+            return NextResponse.json(verifyRes, { status: 200 });
         } else {
             // user is not verified
-            res.status(400).send(verifyRes);
+            return NextResponse.json(verifyRes, { status: 400 });
         }
     } catch (error) {
-        res.status(500).json({ error: 'Internal Server Error' });
+        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
-};
+}

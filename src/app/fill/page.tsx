@@ -4,11 +4,7 @@ import React from 'react';
 import { RegisterSong } from '../components/RegisterSong';
 import { SongDetails } from '../components/SongDetails';
 
-interface PageProps {
-    isMissing?: boolean;
-}
-
-const Page: React.FC<PageProps> = ({ isMissing }) => {
+const Fill: React.FC<{ isMissing?: boolean }> = ({ isMissing = false }) => {
     return (
         <div>
             {isMissing ? <SongDetails /> : <RegisterSong />}
@@ -16,4 +12,4 @@ const Page: React.FC<PageProps> = ({ isMissing }) => {
     );
 };
 
-export default Page;
+export default Fill;
