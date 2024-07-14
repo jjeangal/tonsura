@@ -17,5 +17,3 @@ class GCN(torch.nn.Module):
         x = F.relu(x)
         x = self.conv3(x, edge_index)
         return x
-
-
