@@ -28,11 +28,10 @@ Beyond this simple example, we want to ultimately transform the music streaming 
 
 Technologies Used: WorldCoin login, Safe, IPFS, Web3.Storage, The Graph subgraphs, ENS
 
-1. **Safe**
-2. **WorldCoin login**
-3.
-4.  
-
+1. **Safe : Passkeys** 
+2. **WorldCoin : Incognito Actions**
+3. **The Graph : New Subgraph**
+4. **ENS : Naming Smart Contracts**
 
 ## Pitch
 
