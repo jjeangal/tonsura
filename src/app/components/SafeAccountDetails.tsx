@@ -56,7 +56,7 @@ function SafeAccountDetails({ passkey }: Props) {
     const jiffscanLink = `https://jiffyscan.xyz/userOpHash/${userOp}?network=${CHAIN_NAME}`
 
     return (
-        <Box margin="32px auto 0" minWidth="320px" boxShadow="md" borderRadius="md" bg="background.paper" p={4}>
+        <Box margin="50px auto 0" minWidth="320px" boxShadow="md" borderRadius="md" bg="background.paper" p={4}>
             <Stack alignItems="center">
                 <Heading textAlign="center" size="lg" color="primary.main">
                     Your Safe Account
