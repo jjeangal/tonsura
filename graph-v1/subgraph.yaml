@@ -24,3 +24,16 @@ dataSources:
         - event: SongCreated(uint256,string,address)
           handler: handleSongCreated
       file: ./src/tonsura.ts
+templates:
+  - kind: file/ipfs
+    name: IpfsContent
+    mapping:
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - SongContent
+      abis:
+        - name: Tonsura
+          file: ./abis/Tonsura.json
+      handler: handleSongContent
+      file: ./src/tonsura.ts

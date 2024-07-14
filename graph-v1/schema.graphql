@@ -7,3 +7,9 @@ type SongCreated @entity(immutable: true) {
   blockTimestamp: BigInt!
   transactionHash: Bytes!
 }
+
+type SongContent @entity(immutable: true) {
+  id: Bytes!
+  hash: String! # string
+  content: String! # string
+}
