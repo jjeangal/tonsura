@@ -5,7 +5,7 @@ import { RegisterSong } from '../components/RegisterSong';
 import { SongDetails } from '../components/SongDetails';
 
 interface PageProps {
-    isMissing?: boolean;
+    isMissing: boolean;
 }
 
 const Fill: React.FC<PageProps> = ({ isMissing }) => {
