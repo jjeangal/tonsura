@@ -75,9 +75,24 @@ export function RegisterSong() {
         const { id, name, title, newLinks, thumbnail, tags } = await setArguments();
         console.log('Arguments set:', { id, name, title, newLinks, thumbnail, tags });
 
-        const response = await jsonToIpfs(id, name, title, newLinks, thumbnail, tags);
-        console.log(response.data);
-        await handleRegisterSong(response.data);
+        const response = await fetch('/api/create-json', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: id,
+                name: name,
+                title: title,
+                links: newLinks,
+                thumbnail: thumbnail,
+                tags: tags
+            }),
+        });
+        const data = await response.json();
+        console.log('Data:', data);
+
+        await handleRegisterSong(data.message.toString());
     }
 
     async function handleRegisterSong(metadata: string) {
@@ -85,7 +100,7 @@ export function RegisterSong() {
 
         const passkey = await loadPasskeysFromLocalStorage()[0];
         console.log(passkey);
-        const userOp = await registerSong(passkey, metadata!)
+        const userOp = await registerSong(passkey, "https://api.thegraph.com/ipfs/api/v0/cat?arg=" + metadata);
 
         setIsLoading(false)
 

@@ -17,7 +17,7 @@ const paymasterOptions = {
 }
 
 /**
- * Mint an NFT.
+ * Register a Song.
  * @param {PasskeyArgType} signer - Signer object with rawId and coordinates.
  * @param {string} safeAddress - Safe address.
  * @returns {Promise<void>}
@@ -34,7 +34,6 @@ export const registerSong = async (passkey: PasskeyArgType, safeAddress: string)
             threshold: 1,
         },
     })
-    console.log(safe4337Pack.protocolKit.getAddress())
 
     const registerSongTx = {
         to: Tonsura[11155111][0].contracts.Tonsura.address,
@@ -51,6 +50,7 @@ export const registerSong = async (passkey: PasskeyArgType, safeAddress: string)
     )
 
     console.log('SafeOperation', signedSafeOperation)
+    console.log(safeAddress);
 
     // 4) Execute SafeOperation
     const userOperationHash = await safe4337Pack.executeTransaction({
